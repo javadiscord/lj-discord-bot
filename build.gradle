@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'com.diffplug.spotless' version '6.22.0'
+}
+
+group = 'com.javadiscord.bot'
+version = '1.0-SNAPSHOT'
+
+spotless {
+    java {
+        importOrder()
+        googleJavaFormat()
+                .aosp()
+                .reflowLongStrings()
+                .formatJavadoc(true)
+                .reorderImports(true)
+                .groupArtifact('com.google.googlejavaformat:google-java-format')
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.theokanning.openai-gpt3-java:service:0.16.0'
+    implementation 'com.rometools:rome:2.1.0'
+    implementation 'net.dv8tion:JDA:5.0.0-beta.18'
+
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.16.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.16.0'
+
+    implementation 'org.apache.logging.log4j:log4j-api:2.22.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.22.1'
+}
+
+test {
+    useJUnitPlatform()
+}
