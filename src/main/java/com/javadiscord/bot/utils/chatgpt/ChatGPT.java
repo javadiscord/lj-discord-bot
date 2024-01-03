@@ -16,6 +16,7 @@ import java.util.Optional;
 
 public class ChatGPT {
     private static final Logger logger = LoggerFactory.getLogger(ChatGPT.class);
+    private static final String API_KEY = System.getenv("CHATGPT_API_KEY");
     private static final Duration TIMEOUT = Duration.ofMinutes(3);
     private static final int MAX_TOKENS = 3_000;
     private static final String AI_MODEL = "gpt-3.5-turbo";
@@ -23,7 +24,7 @@ public class ChatGPT {
 
     public ChatGPT() {
         openAiService =
-                new OpenAiService("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", TIMEOUT);
+                new OpenAiService(API_KEY, TIMEOUT);
 
         ChatMessage setupMessage =
                 new ChatMessage(
