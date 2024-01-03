@@ -5,6 +5,7 @@ import com.javadiscord.bot.commands.slash.SlashCommandRepository;
 import com.javadiscord.bot.events.JavaNewsRssEvent;
 import com.javadiscord.bot.listener.*;
 import com.javadiscord.bot.utils.Executor;
+import com.javadiscord.bot.utils.logging.DiscordAppender;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -32,6 +33,8 @@ public class Main {
                         .setEnabledIntents(List.of(GatewayIntent.values()))
                         .build()
                         .awaitReady();
+        DiscordAppender.setJda(jda);
+
         if (jda.getStatus() == JDA.Status.CONNECTED) {
             logger.info("Bot has started!");
             startEvents(jda);
