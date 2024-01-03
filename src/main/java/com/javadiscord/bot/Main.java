@@ -5,6 +5,7 @@ import com.javadiscord.bot.commands.slash.SlashCommandRepository;
 import com.javadiscord.bot.events.JavaNewsRssEvent;
 import com.javadiscord.bot.listener.*;
 import com.javadiscord.bot.utils.Executor;
+import com.javadiscord.bot.utils.logging.DiscordAppender;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -13,15 +14,15 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger(Main.class);
     private static final String BOT_TOKEN = System.getenv("BOT_TOKEN");
 
     public static void main(String[] args) throws InterruptedException {
@@ -32,6 +33,8 @@ public class Main {
                         .setEnabledIntents(List.of(GatewayIntent.values()))
                         .build()
                         .awaitReady();
+        DiscordAppender.setJda(jda);
+
         if (jda.getStatus() == JDA.Status.CONNECTED) {
             logger.info("Bot has started!");
             startEvents(jda);

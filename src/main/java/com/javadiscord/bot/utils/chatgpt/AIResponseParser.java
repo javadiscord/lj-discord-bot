@@ -1,14 +1,14 @@
 package com.javadiscord.bot.utils.chatgpt;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AIResponseParser {
-    private static final Logger logger = LoggerFactory.getLogger(AIResponseParser.class);
+    private static final Logger logger = LogManager.getLogger(AIResponseParser.class);
 
     private AIResponseParser() {}
 

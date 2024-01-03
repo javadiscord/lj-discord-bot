@@ -8,15 +8,15 @@ import com.rometools.rome.io.XmlReader;
 
 import net.dv8tion.jda.api.JDA;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
 
 public class JavaNewsRssEvent implements Runnable {
-    private static final Logger logger = LoggerFactory.getLogger(JavaNewsRssEvent.class);
+    private static final Logger logger = LogManager.getLogger(JavaNewsRssEvent.class);
     private static final String RSS_URL =
             "https://wiki.openjdk.org/spaces/createrssfeed.action?types=page&spaces=JDKUpdates&maxResults=15&title=%5BJDK+Updates%5D+Pages+Feed&amp;publicFeed=true";
     private final JDA jda;

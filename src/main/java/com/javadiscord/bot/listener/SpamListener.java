@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class SpamListener extends ListenerAdapter {
+    private static final Logger logger = LogManager.getLogger(SpamListener.class);
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -94,6 +97,9 @@ public class SpamListener extends ListenerAdapter {
                                 event.getAuthor().getAsMention()
                                         + " has been muted for 1 minute for spamming.")
                         .queue();
+                logger.info(
+                        event.getAuthor().getAsMention()
+                                + " has been muted for 1 minute for spamming.");
                 Executor.execute(
                         () -> {
                             try {
@@ -103,6 +109,7 @@ public class SpamListener extends ListenerAdapter {
                             }
                             spam.setCount(0);
                             event.getGuild().removeRoleFromMember(event.getMember(), mute).queue();
+                            logger.info(event.getAuthor().getAsMention() + " has been unmuted");
                         });
             }
         } else {

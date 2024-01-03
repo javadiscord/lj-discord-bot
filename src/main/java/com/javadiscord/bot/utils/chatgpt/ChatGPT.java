@@ -6,8 +6,8 @@ import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.service.OpenAiService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.Duration;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class ChatGPT {
-    private static final Logger logger = LoggerFactory.getLogger(ChatGPT.class);
+    private static final Logger logger = LogManager.getLogger(ChatGPT.class);
     private static final String API_KEY = System.getenv("CHATGPT_API_KEY");
     private static final Duration TIMEOUT = Duration.ofMinutes(3);
     private static final int MAX_TOKENS = 3_000;
