@@ -18,7 +18,7 @@ jobs:
           gradle-version: 8.5
 
       - name: Spotless
-        run: ./gradlew spotlessCheck
+        run: gradle spotlessCheck
 
       - uses: pre-commit/action@v3.0.0
         with:
