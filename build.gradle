@@ -18,6 +18,10 @@ shadowJar {
     archiveVersion.set('')
 }
 
+tasks.register('stage') {
+    dependsOn build, clean
+}
+
 spotless {
     java {
         importOrder()
