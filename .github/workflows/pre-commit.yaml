@@ -1,5 +1,7 @@
 name: pre-commit
-on: push
+on:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   pre-commit:
@@ -9,6 +11,9 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.11.2'
+      - uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 8.5
       - uses: pre-commit/action@v3.0.0
         with:
-          extra_args: "detect-secrets --all-files"
+          extra_args: "--all-files"

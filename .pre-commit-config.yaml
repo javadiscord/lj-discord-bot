@@ -17,6 +17,6 @@ repos:
       hooks:
         -   id: spotless-check
             name: Spotless Check
-            entry: gradle spotlessCheck
+            entry: gradlew spotlessCheck
             language: system
             types: [java]
