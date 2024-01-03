@@ -13,10 +13,3 @@ repos:
     hooks:
       - id: detect-secrets
         args: ["--baseline", ".secrets.baseline"]
-  -   repo: local
-      hooks:
-        -   id: spotless-check
-            name: Spotless Check
-            entry: gradle spotlessCheck
-            language: system
-            types: [java]
