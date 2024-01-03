@@ -13,7 +13,7 @@ public class TextCommandRepository {
         COMMANDS.put("mute", new MuteCommand());
         COMMANDS.put("unmute", new UnmuteCommand());
         COMMANDS.put("say", new SayCommand());
-        COMMANDS.put("sayEmbed", new SayEmbedCommand());
+        COMMANDS.put("embed", new SayEmbedCommand());
     }
 
     public static TextCommand get(String key) {

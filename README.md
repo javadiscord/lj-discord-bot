@@ -1,6 +1,6 @@
 # 〜 Love Java ღ Server Discord Bot
-Welcome to the 〜 Love Java ღ Discord bot repository! This bot is an integral part of the 〜 Love Java ღ Discord Server, 
-created and maintained by our wonderful community of Java enthusiasts. We encourage everyone to join in and contribute to 
+Welcome to the 〜 Love Java ღ Discord bot repository! This bot is an integral part of the 〜 Love Java ღ Discord Server,
+created and maintained by our wonderful community of Java enthusiasts. We encourage everyone to join in and contribute to
 this project, as it serves multiple purposes:
 
 ## Project Goals

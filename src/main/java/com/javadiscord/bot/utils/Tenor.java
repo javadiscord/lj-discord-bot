@@ -14,7 +14,7 @@ import java.net.http.HttpResponse;
 
 public class Tenor {
     private static final Logger logger = LoggerFactory.getLogger(Tenor.class);
-    private static final String API_KEY = "FEHK3IC0LCLT";
+    private static final String API_KEY = System.getenv("TENOR_API_KEY");
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 

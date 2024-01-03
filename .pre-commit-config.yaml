@@ -3,7 +3,6 @@ repos:
     rev: v4.5.0
     hooks:
       - id: check-added-large-files
-        exclude: package-lock.json
       - id: check-case-conflict
       - id: detect-private-key
       - id: end-of-file-fixer
