@@ -8,6 +8,22 @@ this project, as it serves multiple purposes:
 2. **Open-Source Contributions**: We believe in the power of open-source contributions. By actively participating in this project, you can gain exposure to open-source development practices and foster collaboration with like-minded individuals.
 3. **Quality-of-Life Features**: The bot serves as a valuable asset to our Discord server, enhancing the overall user experience by providing specific quality-of-life features. It's our way of giving back to the Java community.
 
+## Setup
+This project uses the following tech:
+* [pre-commit](https://pre-commit.com/)
+* Java 21
+* Gradle version 8.5
+
+You must have pre-commit installed on your machine. Once that's installed, in the root of the project run `pre-commit install` to install the git hooks.
+
+To build the project simply run `gradle build` and this will package everything up.
+
+Before running the application (e.g. `java -jar build/libs/Java-Discord-Bot.jar`) you must set the following environment variables:
+
+1. `BOT_TOKEN` this is your Discord Bot Token
+2. `CHATGPT_API_KEY` this is your [ChatGPT API](https://platform.openai.com/api-keys) key
+3. `TENOR_API_KEY` this your [Tenor](https://developers.google.com/tenor/guides/quickstart/) API Key
+
 ## How to Contribute
 Contributions are highly encouraged, regardless of whether it's a minor bug fix or a major feature enhancement. To get started, please follow these steps:
 
