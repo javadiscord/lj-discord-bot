@@ -23,8 +23,7 @@ public class ChatGPT {
     private final OpenAiService openAiService;
 
     public ChatGPT() {
-        openAiService =
-                new OpenAiService(API_KEY, TIMEOUT);
+        openAiService = new OpenAiService(API_KEY, TIMEOUT);
 
         ChatMessage setupMessage =
                 new ChatMessage(
