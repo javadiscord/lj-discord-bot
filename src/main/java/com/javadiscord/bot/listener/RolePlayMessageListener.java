@@ -19,6 +19,6 @@ public class RolePlayMessageListener extends ListenerAdapter {
     }
 
     private static boolean containsRolePlayAction(String message) {
-        return message.matches(".*-.*-.*");
+        return message.matches(".*-.*-.*") && message.startsWith("-");
     }
 }
