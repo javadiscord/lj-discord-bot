@@ -20,34 +20,35 @@ public class RolePlayCommand implements TextCommand {
         String content = message.getContentRaw();
         String[] split = content.split("-");
         String action = split[1].trim();
-
         List<Member> mentions = message.getMentions().getMembers();
-        String from = event.getAuthor().getAsMention();
+        if(!mentions.isEmpty()) {
+            String from = event.getAuthor().getAsMention();
+            StringBuilder names = new StringBuilder();
+            mentions.forEach(
+                    m -> {
+                        names.append(m.getAsMention());
+                        names.append(" ");
+                    });
 
-        StringBuilder names = new StringBuilder();
-        mentions.forEach(
-                m -> {
-                    names.append(m.getAsMention());
-                    names.append(" ");
-                });
+            if(names.toString().trim().equals("**")) {
+                return;
+            }
 
-        String searchTerm = action.replaceAll(" ", "%20") + "ing%20anime";
-        JsonNode json = Tenor.search(searchTerm, 50);
+            String searchTerm = action.replaceAll(" ", "%20") + "ing%20anime";
+            JsonNode json = Tenor.search(searchTerm, 50);
 
-        if (json != null && json.has("results")) {
-            JsonNode results = json.get("results");
-            int random = ThreadLocalRandom.current().nextInt(results.size());
-            JsonNode result = results.get(random);
-            JsonNode media = result.get("media").get(0);
-            JsonNode gif = media.get("gif");
-            String url = gif.get("url").asText();
-
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setDescription("**" + from + "** " + action + " **" + names + "**");
-            embedBuilder.setImage(url);
-            embedBuilder.setColor(Color.RED);
-
-            event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
+            if (json != null && json.has("results")) {
+                JsonNode results = json.get("results");
+                JsonNode result = results.get(ThreadLocalRandom.current().nextInt(results.size()));
+                JsonNode media = result.get("media").get(0);
+                JsonNode gif = media.get("gif");
+                String url = gif.get("url").asText();
+                EmbedBuilder embedBuilder = new EmbedBuilder();
+                embedBuilder.setDescription("**" + from + "** " + action + " **" + names + "**");
+                embedBuilder.setImage(url);
+                embedBuilder.setColor(Color.RED);
+                event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
+            }
         }
     }
 }
