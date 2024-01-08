@@ -21,7 +21,7 @@ public class RolePlayCommand implements TextCommand {
         String[] split = content.split("-");
         String action = split[1].trim();
         List<Member> mentions = message.getMentions().getMembers();
-        if(!mentions.isEmpty()) {
+        if (!mentions.isEmpty()) {
             String from = event.getAuthor().getAsMention();
             StringBuilder names = new StringBuilder();
             mentions.forEach(
@@ -30,7 +30,7 @@ public class RolePlayCommand implements TextCommand {
                         names.append(" ");
                     });
 
-            if(names.toString().trim().equals("**")) {
+            if (names.toString().trim().equals("**")) {
                 return;
             }
 
