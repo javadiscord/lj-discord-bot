@@ -36,7 +36,6 @@ public class Main {
         DiscordAppender.setJda(jda);
 
         if (jda.getStatus() == JDA.Status.CONNECTED) {
-            logger.info("Bot has started!");
             startEvents(jda);
             registerSlashCommands(jda);
             registerListeners(jda);
