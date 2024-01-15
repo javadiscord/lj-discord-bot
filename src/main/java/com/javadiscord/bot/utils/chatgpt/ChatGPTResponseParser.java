@@ -5,14 +5,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class AIResponseParser {
-    private static final Logger logger = LogManager.getLogger(AIResponseParser.class);
+public class ChatGPTResponseParser {
+    private static final Logger logger = LogManager.getLogger(ChatGPTResponseParser.class);
+    private static final int RESPONSE_LENGTH_LIMIT = 2000;
 
-    private AIResponseParser() {}
-
-    private static final int RESPONSE_LENGTH_LIMIT = 2_000;
+    private ChatGPTResponseParser() {}
 
     public static String[] parse(String response) {
         String[] partedResponse = new String[] {response};
@@ -20,14 +18,12 @@ public class AIResponseParser {
             logger.debug("Response to parse:\n" + response);
             partedResponse = partitionAiResponse(response);
         }
-
         return partedResponse;
     }
 
     private static String[] partitionAiResponse(String response) {
         List<String> responseChunks = new ArrayList<>();
         String[] splitResponseOnMarks = response.split("```");
-
         for (int i = 0; i < splitResponseOnMarks.length; i++) {
             String split = splitResponseOnMarks[i];
             List<String> chunks = new ArrayList<>();
@@ -57,13 +53,16 @@ public class AIResponseParser {
                                 .map(s -> ("```" + lang).concat(s).concat("```"))
                                 // Handle case of doubling language declaration
                                 .map(s -> s.replaceFirst("```" + lang + lang, "```" + lang))
-                                .collect(Collectors.toList());
+                                .toList();
             }
 
-            List<String> list = chunks.stream().filter(string -> !string.isEmpty()).toList();
-            responseChunks.addAll(list);
+            responseChunks.addAll(filterEmptyStrings(chunks));
         } // end of for loop.
 
         return responseChunks.toArray(new String[0]);
+    }
+
+    private static List<String> filterEmptyStrings(List<String> chunks) {
+        return chunks.stream().filter(string -> !string.isEmpty()).toList();
     }
 }

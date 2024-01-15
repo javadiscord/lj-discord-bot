@@ -18,9 +18,31 @@ public class ChatGPT {
     private static final Logger logger = LogManager.getLogger(ChatGPT.class);
     private static final String API_KEY = System.getenv("CHATGPT_API_KEY");
     private static final Duration TIMEOUT = Duration.ofMinutes(3);
-    private static final int MAX_TOKENS = 3_000;
     private static final String AI_MODEL = "gpt-3.5-turbo";
     private final OpenAiService openAiService;
+
+    private static final int MAX_TOKENS = 2000;
+
+    /**
+     * This parameter reduces the likelihood of the AI repeating itself. A higher frequency penalty
+     * makes the model less likely to repeat the same lines verbatim. It helps in generating more
+     * diverse and varied responses.
+     */
+    private static final double FREQUENCY_PENALTY = 0.5;
+
+    /**
+     * This parameter controls the randomness of the AI's responses. A higher temperature results in
+     * more varied, unpredictable, and creative responses. Conversely, a lower temperature makes the
+     * model's responses more deterministic and conservative.
+     */
+    private static final double TEMPERATURE = 0.8;
+
+    /**
+     * n: This parameter specifies the number of responses to generate for each prompt. If n is more
+     * than 1, the AI will generate multiple different responses to the same prompt, each one being
+     * a separate iteration based on the input.
+     */
+    private static final int MAX_NUMBER_OF_RESPONSES = 1;
 
     public ChatGPT() {
         openAiService = new OpenAiService(API_KEY, TIMEOUT);
@@ -36,10 +58,10 @@ public class ChatGPT {
                 ChatCompletionRequest.builder()
                         .model(AI_MODEL)
                         .messages(List.of(setupMessage))
-                        .frequencyPenalty(0.5)
-                        .temperature(0.3)
+                        .frequencyPenalty(FREQUENCY_PENALTY)
+                        .temperature(TEMPERATURE)
                         .maxTokens(50)
-                        .n(1)
+                        .n(MAX_NUMBER_OF_RESPONSES)
                         .build();
 
         openAiService.createChatCompletion(systemSetupRequest);
@@ -49,14 +71,15 @@ public class ChatGPT {
         try {
             ChatMessage chatMessage =
                     new ChatMessage(ChatMessageRole.USER.value(), Objects.requireNonNull(question));
+
             ChatCompletionRequest chatCompletionRequest =
                     ChatCompletionRequest.builder()
                             .model(AI_MODEL)
                             .messages(List.of(chatMessage))
-                            .frequencyPenalty(0.5)
-                            .temperature(0.3)
+                            .frequencyPenalty(FREQUENCY_PENALTY)
+                            .temperature(TEMPERATURE)
                             .maxTokens(MAX_TOKENS)
-                            .n(1)
+                            .n(MAX_NUMBER_OF_RESPONSES)
                             .build();
 
             String response =
@@ -67,11 +90,7 @@ public class ChatGPT {
                             .getMessage()
                             .getContent();
 
-            if (response == null) {
-                return Optional.empty();
-            }
-
-            return Optional.of(AIResponseParser.parse(response));
+            return Optional.ofNullable(ChatGPTResponseParser.parse(response));
         } catch (OpenAiHttpException openAiHttpException) {
             logger.warn(
                     String.format(
