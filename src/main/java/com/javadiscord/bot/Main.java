@@ -3,6 +3,7 @@ package com.javadiscord.bot;
 import com.javadiscord.bot.commands.slash.SlashCommandOption;
 import com.javadiscord.bot.commands.slash.SlashCommandRepository;
 import com.javadiscord.bot.events.JavaNewsRssEvent;
+import com.javadiscord.bot.events.UpdateMemberCountEvent;
 import com.javadiscord.bot.listener.*;
 import com.javadiscord.bot.utils.Executor;
 import com.javadiscord.bot.utils.logging.DiscordAppender;
@@ -14,15 +15,11 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-    private static final Logger logger = LogManager.getLogger(Main.class);
     private static final String BOT_TOKEN = System.getenv("BOT_TOKEN");
 
     public static void main(String[] args) throws InterruptedException {
@@ -53,6 +50,7 @@ public class Main {
 
     private static void startEvents(JDA jda) {
         Executor.run(new JavaNewsRssEvent(jda), 12, TimeUnit.HOURS);
+        Executor.run(new UpdateMemberCountEvent(jda), 1, TimeUnit.DAYS);
     }
 
     private static void registerSlashCommands(JDA jda) {
