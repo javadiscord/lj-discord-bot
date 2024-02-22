@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.javadiscord.bot'
-version = '1.10.0'
+version = project.version
 
 application {
     mainClass = 'com.javadiscord.bot.Main'
@@ -57,4 +57,32 @@ tasks.register('stage') {
 
 test {
     useJUnitPlatform()
+}
+
+tasks.register('bumpPatchVersion') {
+    doLast {
+        def versionParts = project.version.split("\\.")
+        def newVersion = "${versionParts[0]}.${versionParts[1]}.${versionParts[2] as Integer + 1}"
+        project.version = newVersion
+        file('gradle.properties').text = "version=$newVersion"
+        println "Version bumped to: $newVersion"
+    }
+}
+tasks.register('bumpMinorVersion') {
+    doLast {
+        def versionParts = project.version.split("\\.")
+        def newVersion = "${versionParts[0]}.${versionParts[1] as Integer + 1}.0"
+        project.version = newVersion
+        file('gradle.properties').text = "version=$newVersion"
+        println "Version bumped to: $newVersion"
+    }
+}
+tasks.register('bumpMajorVersion') {
+    doLast {
+        def versionParts = project.version.split("\\.")
+        def newVersion = "${versionParts[0] as Integer + 1}.0.0"
+        project.version = newVersion
+        file('gradle.properties').text = "version=$newVersion"
+        println "Version bumped to: $newVersion"
+    }
 }
