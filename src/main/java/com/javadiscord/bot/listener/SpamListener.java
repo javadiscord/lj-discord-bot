@@ -86,7 +86,7 @@ public class SpamListener extends ListenerAdapter {
         var last = spam.getLastMessage();
         var current = System.currentTimeMillis();
         spam.setLastMessage(System.currentTimeMillis());
-        if ((current - last) < 1000) {
+        if ((current - last) < 1500) {
             if (spam.getCount() >= 3) {
                 Role mute = event.getJDA().getRolesByName("Muted", true).getFirst();
                 event.getGuild()
