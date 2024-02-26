@@ -2,6 +2,7 @@ package com.javadiscord.bot;
 
 import com.javadiscord.bot.commands.slash.SlashCommandOption;
 import com.javadiscord.bot.commands.slash.SlashCommandRepository;
+import com.javadiscord.bot.events.BumpReminderEvent;
 import com.javadiscord.bot.events.JavaNewsRssEvent;
 import com.javadiscord.bot.events.UpdateMemberCountEvent;
 import com.javadiscord.bot.listener.*;
@@ -51,6 +52,7 @@ public class Main {
     private static void startEvents(JDA jda) {
         Executor.run(new JavaNewsRssEvent(jda), 12, TimeUnit.HOURS);
         Executor.run(new UpdateMemberCountEvent(jda), 1, TimeUnit.DAYS);
+        Executor.run(new BumpReminderEvent(jda), 2, TimeUnit.HOURS);
     }
 
     private static void registerSlashCommands(JDA jda) {
