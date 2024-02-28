@@ -23,6 +23,7 @@ Before running the application (e.g. `java -jar build/libs/Java-Discord-Bot.jar`
 1. `BOT_TOKEN` this is your Discord Bot Token
 2. `CHATGPT_API_KEY` this is your [ChatGPT API](https://platform.openai.com/api-keys) key
 3. `TENOR_API_KEY` this your [Tenor](https://developers.google.com/tenor/guides/quickstart/) API Key
+4. `RAPID_API_KEY` this is your [RapidAPI](https://rapidapi.com/) key
 
 ## How to Contribute
 Contributions are highly encouraged, regardless of whether it's a minor bug fix or a major feature enhancement. To get started, please follow these steps:
