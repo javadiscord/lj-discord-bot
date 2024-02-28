@@ -4,6 +4,7 @@ import com.javadiscord.bot.commands.slash.SlashCommandOption;
 import com.javadiscord.bot.commands.slash.SlashCommandRepository;
 import com.javadiscord.bot.events.BumpReminderEvent;
 import com.javadiscord.bot.events.JavaNewsRssEvent;
+import com.javadiscord.bot.events.MemeSenderEvent;
 import com.javadiscord.bot.events.UpdateMemberCountEvent;
 import com.javadiscord.bot.listener.*;
 import com.javadiscord.bot.utils.Executor;
@@ -53,6 +54,7 @@ public class Main {
         Executor.run(new JavaNewsRssEvent(jda), 12, TimeUnit.HOURS);
         Executor.run(new UpdateMemberCountEvent(jda), 1, TimeUnit.DAYS);
         Executor.run(new BumpReminderEvent(jda), 2, TimeUnit.HOURS);
+        Executor.run(new MemeSenderEvent(jda), 12, TimeUnit.HOURS);
     }
 
     private static void registerSlashCommands(JDA jda) {
