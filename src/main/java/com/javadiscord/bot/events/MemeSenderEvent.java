@@ -5,17 +5,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.utils.FileUpload;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Optional;
 
 public class MemeSenderEvent implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(MemeSenderEvent.class);
@@ -54,7 +60,7 @@ public class MemeSenderEvent implements Runnable {
             MemeResponse[] memes = OBJECT_MAPPER.readValue(response.body(), MemeResponse[].class);
 
             if (memes.length > 0) {
-                sendMessageToChannel(memes[0].image());
+                downloadImage(memes[0].image).ifPresent(this::sendMessageToChannel);
             }
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
@@ -62,13 +68,32 @@ public class MemeSenderEvent implements Runnable {
         }
     }
 
-    private void sendMessageToChannel(String imageUrl) {
+    private void sendMessageToChannel(byte[] image) {
         List<TextChannel> channels = jda.getTextChannelsByName(MEME_CHANNEL, true);
         if (!channels.isEmpty()) {
             TextChannel channel = channels.getFirst();
-            channel.sendMessage(imageUrl).queue();
+            channel.sendFiles(FileUpload.fromData(image, "meme.png")).queue();
         } else {
             LOGGER.warn("Could not find {} channel", MEME_CHANNEL);
         }
+    }
+
+    private Optional<byte[]> downloadImage(String imageURL) {
+        try {
+            URL url = new URL(imageURL);
+            URLConnection connection = url.openConnection();
+            try (InputStream inputStream = connection.getInputStream()) {
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    byteArrayOutputStream.write(buffer, 0, bytesRead);
+                }
+                return Optional.of(byteArrayOutputStream.toByteArray());
+            }
+        } catch (IOException e) {
+            LOGGER.error("Failed to download image", e);
+        }
+        return Optional.empty();
     }
 }
