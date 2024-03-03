@@ -2,6 +2,7 @@ package com.javadiscord.bot.events;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
@@ -17,6 +18,7 @@ public class BumpReminderEvent implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateMemberCountEvent.class);
     private static final String BUMP_CHANNEL = "bump";
     private static final String ROLE_TO_NOTIFY = "Bump Notification";
+    private static final int BUMP_TIME_HOURS = 2;
     private final JDA jda;
 
     public BumpReminderEvent(JDA jda) {
@@ -28,7 +30,8 @@ public class BumpReminderEvent implements Runnable {
         List<TextChannel> channels = jda.getTextChannelsByName(BUMP_CHANNEL, true);
         if (!channels.isEmpty()) {
             TextChannel bumpChannel = channels.getFirst();
-            List<Message> messages = bumpChannel.getHistory().getRetrievedHistory();
+            MessageHistory history = MessageHistory.getHistoryFromBeginning(bumpChannel).complete();
+            List<Message> messages = history.getRetrievedHistory();
             if (messages.isEmpty()) {
                 sendBumpNotification(bumpChannel);
             } else {
@@ -36,7 +39,7 @@ public class BumpReminderEvent implements Runnable {
                                         messages.getLast().getTimeCreated(),
                                         OffsetDateTime.now(ZoneOffset.UTC))
                                 .toHours()
-                        > 2) {
+                        > BUMP_TIME_HOURS) {
                     sendBumpNotification(bumpChannel);
                 }
             }

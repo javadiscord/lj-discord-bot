@@ -12,16 +12,11 @@ import java.util.List;
 public class CloseQuestionThreadCommand implements SlashCommand {
     @Override
     public void handle(SlashCommandInteractionEvent event) {
-        try {
-
-            ThreadChannel threadChannel = event.getChannel().asThreadChannel();
-            Channel parent = threadChannel.getParentChannel();
-            if (parent.getName().equals("questions")) {
-                event.reply("This thread has been closed!").queue();
-                threadChannel.getManager().setArchived(true).queue();
-            }
-        } catch (Exception ignored) {
-            // ignored
+        ThreadChannel threadChannel = event.getChannel().asThreadChannel();
+        Channel parent = threadChannel.getParentChannel();
+        if (parent.getName().equals("questions")) {
+            event.reply("This thread has been closed!").queue();
+            threadChannel.getManager().setArchived(true).queue();
         }
     }
 
