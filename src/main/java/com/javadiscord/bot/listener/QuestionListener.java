@@ -4,7 +4,6 @@ import com.javadiscord.bot.utils.chatgpt.ChatGPT;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.ThreadChannel;
 import net.dv8tion.jda.api.entities.channel.unions.IThreadContainerUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -58,59 +57,38 @@ public class QuestionListener extends ListenerAdapter {
                                             ""))
                             .queue();
 
-                    List<TextChannel> helpChannels =
-                            event.getGuild().getTextChannelsByName("helper-ping", true);
-                    if (!helpChannels.isEmpty()) {
-                        List<Role> helperRole = event.getGuild().getRolesByName("helper", true);
+                    List<Role> helperRole = event.getGuild().getRolesByName("helper", true);
+                    if (!helperRole.isEmpty()) {
+                        event.getChannel()
+                                .sendMessage(helperRole.getFirst().getAsMention())
+                                .queue();
+                    }
 
-                        EmbedBuilder helpEmbed = new EmbedBuilder();
-                        helpEmbed.setAuthor(
-                                threadChannel.getName(), null, event.getAuthor().getAvatarUrl());
-                        helpEmbed.setDescription(
-                                helperRole.getFirst().getAsMention()
-                                        + " \n\n"
-                                        + event.getAuthor().getAsMention()
-                                        + " has requested some help in "
-                                        + parent.getAsMention()
-                                        + "\n\n"
-                                        + "Please see the following help thread!\n"
-                                        + event.getMessage().getJumpUrl()
-                                        + "\n\n"
-                                        + "Thank you "
-                                        + event.getGuild()
-                                                .getEmojisByName("HHeartTurtle", true)
-                                                .getFirst()
-                                                .getAsMention());
-                        helpEmbed.setColor(Color.YELLOW);
+                    StringBuilder answer = new StringBuilder();
+                    answer.append("## Here is an attempted answer by ChatGPT\n\n");
 
-                        helpChannels.getFirst().sendMessageEmbeds(helpEmbed.build()).queue();
+                    chatGPT.ask(event.getMessage().getContentRaw())
+                            .ifPresentOrElse(
+                                    strings -> {
+                                        for (String string : strings) {
+                                            answer.append(string).append("\n");
+                                        }
+                                    },
+                                    () ->
+                                            event.getChannel()
+                                                    .sendMessage(
+                                                            "ChatGPT is currently unavailable.")
+                                                    .queue());
 
-                        StringBuilder answer = new StringBuilder();
-                        answer.append("## Here is an attempted answer by ChatGPT\n\n");
-
-                        chatGPT.ask(event.getMessage().getContentRaw())
-                                .ifPresentOrElse(
-                                        strings -> {
-                                            for (String string : strings) {
-                                                answer.append(string).append("\n");
-                                            }
-                                        },
-                                        () ->
-                                                event.getChannel()
-                                                        .sendMessage(
-                                                                "ChatGPT is currently unavailable.")
-                                                        .queue());
-
-                        EmbedBuilder eb = new EmbedBuilder();
-                        eb.setAuthor("", null, "https://chat.openai.com/favicon-32x32.png");
-                        eb.setDescription(answer.toString());
-                        eb.setColor(Color.CYAN);
-                        eb.setFooter(
-                                "This is an automated response from ChatGPT. Please do not reply to"
+                    EmbedBuilder eb = new EmbedBuilder();
+                    eb.setAuthor("", null, "https://chat.openai.com/favicon-32x32.png");
+                    eb.setDescription(answer.toString());
+                    eb.setColor(Color.CYAN);
+                    eb.setFooter(
+                            "This is an automated response from ChatGPT. Please do not reply to"
                                     + " this message. You cannot follow up with ChatGPTs message.");
 
-                        event.getChannel().sendMessageEmbeds(eb.build()).queue();
-                    }
+                    event.getChannel().sendMessageEmbeds(eb.build()).queue();
                 }
             }
         }
