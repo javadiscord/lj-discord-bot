@@ -36,7 +36,7 @@ public class BumpReminderEvent implements Runnable {
                 sendBumpNotification(bumpChannel);
             } else {
                 if (Duration.between(
-                                        messages.getLast().getTimeCreated(),
+                                        messages.getFirst().getTimeCreated(),
                                         OffsetDateTime.now(ZoneOffset.UTC))
                                 .toHours()
                         > BUMP_TIME_HOURS) {
