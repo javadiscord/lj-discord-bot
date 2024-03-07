@@ -15,4 +15,8 @@ public class Executor {
     public static void run(Runnable runnable, int period, TimeUnit timeUnit) {
         EXECUTOR_SERVICE.scheduleAtFixedRate(runnable, 0, period, timeUnit);
     }
+
+    public static void run(Runnable runnable, int delay, int period, TimeUnit timeUnit) {
+        EXECUTOR_SERVICE.scheduleAtFixedRate(runnable, delay, period, timeUnit);
+    }
 }

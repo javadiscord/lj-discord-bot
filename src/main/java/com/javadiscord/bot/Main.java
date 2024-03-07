@@ -54,7 +54,7 @@ public class Main {
     private static void startEvents(JDA jda) {
         Executor.run(new JavaNewsRssEvent(jda), 12, TimeUnit.HOURS);
         Executor.run(new UpdateMemberCountEvent(jda), 1, TimeUnit.DAYS);
-        Executor.run(new BumpReminderEvent(jda), 2, TimeUnit.HOURS);
+        Executor.run(new BumpReminderEvent(jda), 1, 1, TimeUnit.HOURS);
         Executor.run(new MemeSenderEvent(jda), 12, TimeUnit.HOURS);
         Executor.run(new AutoCloseQuestionEvent(jda), 1, TimeUnit.HOURS);
     }
