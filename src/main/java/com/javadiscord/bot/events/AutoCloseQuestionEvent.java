@@ -40,7 +40,7 @@ public class AutoCloseQuestionEvent implements Runnable {
                                             .complete();
                             List<Message> messages = history.getRetrievedHistory();
                             if (Duration.between(
-                                                    messages.getLast().getTimeCreated(),
+                                                    messages.getFirst().getTimeCreated(),
                                                     OffsetDateTime.now(ZoneOffset.UTC))
                                             .toHours()
                                     > AUTO_CLOSE_HOURS) {
