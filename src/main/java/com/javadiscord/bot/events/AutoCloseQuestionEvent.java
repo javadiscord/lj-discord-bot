@@ -1,8 +1,6 @@
 package com.javadiscord.bot.events;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.channel.concrete.ForumChannel;
 
 import org.slf4j.Logger;
@@ -34,19 +32,29 @@ public class AutoCloseQuestionEvent implements Runnable {
         forumChannel
                 .getThreadChannels()
                 .forEach(
-                        threadChannel -> {
-                            MessageHistory history =
-                                    MessageHistory.getHistoryFromBeginning(threadChannel)
-                                            .complete();
-                            List<Message> messages = history.getRetrievedHistory();
-                            if (Duration.between(
-                                                    messages.getFirst().getTimeCreated(),
-                                                    OffsetDateTime.now(ZoneOffset.UTC))
-                                            .toHours()
-                                    > AUTO_CLOSE_HOURS) {
-                                threadChannel.sendMessage("This thread has been closed!").queue();
-                                threadChannel.getManager().setArchived(true).queue();
-                            }
-                        });
+                        threadChannel ->
+                                threadChannel
+                                        .getHistory()
+                                        .retrievePast(1)
+                                        .queue(
+                                                messages -> {
+                                                    if (Duration.between(
+                                                                            messages.getFirst()
+                                                                                    .getTimeCreated(),
+                                                                            OffsetDateTime.now(
+                                                                                    ZoneOffset.UTC))
+                                                                    .toHours()
+                                                            > AUTO_CLOSE_HOURS) {
+                                                        threadChannel
+                                                                .sendMessage(
+                                                                        "This thread has been"
+                                                                                + " closed!")
+                                                                .queue();
+                                                        threadChannel
+                                                                .getManager()
+                                                                .setArchived(true)
+                                                                .queue();
+                                                    }
+                                                }));
     }
 }
