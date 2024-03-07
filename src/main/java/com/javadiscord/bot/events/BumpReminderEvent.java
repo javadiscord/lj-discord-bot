@@ -1,8 +1,6 @@
 package com.javadiscord.bot.events;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
@@ -30,19 +28,23 @@ public class BumpReminderEvent implements Runnable {
         List<TextChannel> channels = jda.getTextChannelsByName(BUMP_CHANNEL, true);
         if (!channels.isEmpty()) {
             TextChannel bumpChannel = channels.getFirst();
-            MessageHistory history = MessageHistory.getHistoryFromBeginning(bumpChannel).complete();
-            List<Message> messages = history.getRetrievedHistory();
-            if (messages.isEmpty()) {
-                sendBumpNotification(bumpChannel);
-            } else {
-                if (Duration.between(
-                                        messages.getFirst().getTimeCreated(),
-                                        OffsetDateTime.now(ZoneOffset.UTC))
-                                .toHours()
-                        > BUMP_TIME_HOURS) {
-                    sendBumpNotification(bumpChannel);
-                }
-            }
+            bumpChannel
+                    .getHistory()
+                    .retrievePast(1)
+                    .queue(
+                            messages -> {
+                                if (messages.isEmpty()) {
+                                    sendBumpNotification(bumpChannel);
+                                } else {
+                                    if (Duration.between(
+                                                            messages.getFirst().getTimeCreated(),
+                                                            OffsetDateTime.now(ZoneOffset.UTC))
+                                                    .toHours()
+                                            > BUMP_TIME_HOURS) {
+                                        sendBumpNotification(bumpChannel);
+                                    }
+                                }
+                            });
         } else {
             LOGGER.warn("Could not find {} channel", BUMP_CHANNEL);
         }
