@@ -36,11 +36,18 @@ public class BumpReminderEvent implements Runnable {
                                 if (messages.isEmpty()) {
                                     sendBumpNotification(bumpChannel);
                                 } else {
-                                    if (Duration.between(
-                                                            messages.getFirst().getTimeCreated(),
-                                                            OffsetDateTime.now(ZoneOffset.UTC))
-                                                    .toHours()
-                                            > BUMP_TIME_HOURS) {
+
+                                    if (!messages.getFirst()
+                                                    .getAuthor()
+                                                    .getName()
+                                                    .equals(jda.getSelfUser().getName())
+                                            && Duration.between(
+                                                                    messages.getFirst()
+                                                                            .getTimeCreated(),
+                                                                    OffsetDateTime.now(
+                                                                            ZoneOffset.UTC))
+                                                            .toHours()
+                                                    > BUMP_TIME_HOURS) {
                                         sendBumpNotification(bumpChannel);
                                     }
                                 }
