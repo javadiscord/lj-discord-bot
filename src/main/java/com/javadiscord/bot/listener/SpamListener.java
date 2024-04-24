@@ -79,7 +79,7 @@ public class SpamListener extends ListenerAdapter {
     }
 
     public static void muteIfNeeded(MessageReceivedEvent event) {
-        if (event.getAuthor().isBot()) {
+        if (event.getAuthor().isBot() || event.getChannel().getName().equalsIgnoreCase("spam")) {
             return;
         }
         Spam spam = update(event.getAuthor().getAsMention());
