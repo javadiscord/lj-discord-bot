@@ -23,7 +23,7 @@ public class UpdateMemberCountEvent implements Runnable {
         if (!categories.isEmpty()) {
             Category infoCategory = categories.getFirst();
             int totalMembers = infoCategory.getGuild().getMemberCount();
-            infoCategory.getManager().setName("INFO - Members %d".formatted(totalMembers)).queue();
+            infoCategory.getManager().setName("Members %d".formatted(totalMembers)).queue();
             LOGGER.trace(
                     "Updated {} category title to show {} members", CATEGORY_NAME, totalMembers);
         } else {
