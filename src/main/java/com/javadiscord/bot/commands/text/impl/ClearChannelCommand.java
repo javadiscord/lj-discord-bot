@@ -13,7 +13,7 @@ public class ClearChannelCommand implements TextCommand {
 
     @Override
     public void handle(MessageReceivedEvent event, String input) {
-        if (hasRole(event, "Administrators")) {
+        if (hasRole(event, "Administrator")) {
             int limit;
             try {
                 limit = Integer.parseInt(input);

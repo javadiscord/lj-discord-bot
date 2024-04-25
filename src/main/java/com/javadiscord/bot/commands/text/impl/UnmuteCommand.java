@@ -11,7 +11,7 @@ import java.util.List;
 public class UnmuteCommand implements TextCommand {
     @Override
     public void handle(MessageReceivedEvent event, String input) {
-        if (hasRole(event, "Administrators")) {
+        if (hasRole(event, "Administrator")) {
             Role role = event.getJDA().getRolesByName("Muted", true).getFirst();
             List<Member> members = event.getMessage().getMentions().getMembers();
             members.forEach(
