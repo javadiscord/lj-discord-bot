@@ -6,11 +6,9 @@ import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-
 public class UpdateMemberCountEvent implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateMemberCountEvent.class);
-    private static final String CATEGORY_NAME = "info";
+    private static final long CATEGORY_ID = 1152638546725838960L;
     private final JDA jda;
 
     public UpdateMemberCountEvent(JDA jda) {
@@ -19,15 +17,14 @@ public class UpdateMemberCountEvent implements Runnable {
 
     @Override
     public void run() {
-        List<Category> categories = jda.getCategoriesByName(CATEGORY_NAME, true);
-        if (!categories.isEmpty()) {
-            Category infoCategory = categories.getFirst();
-            int totalMembers = infoCategory.getGuild().getMemberCount();
-            infoCategory.getManager().setName("Members %d".formatted(totalMembers)).queue();
+        Category categories = jda.getCategoryById(CATEGORY_ID);
+        if (categories != null) {
+            int totalMembers = categories.getGuild().getMemberCount();
+            categories.getManager().setName("Members %d".formatted(totalMembers)).queue();
             LOGGER.trace(
-                    "Updated {} category title to show {} members", CATEGORY_NAME, totalMembers);
+                    "Updated {} categoryId title to show {} members", categories, totalMembers);
         } else {
-            LOGGER.warn("Could not find category with name: {}", CATEGORY_NAME);
+            LOGGER.warn("Could not find category with id: {}", CATEGORY_ID);
         }
     }
 }
