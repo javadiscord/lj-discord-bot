@@ -21,10 +21,10 @@ public class SpamListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if (CurseWords.containsCurseWord(event.getMessage().getContentRaw())) {
+        if (!event.getMessage().getAuthor().isBot() && CurseWords.containsCurseWord(event.getMessage().getContentRaw())) {
 
             event.getMessage().delete().queue();
-            event.getAuthor()
+            event.getMessage().getAuthor()
                     .openPrivateChannel()
                     .queue(
                             channel ->
