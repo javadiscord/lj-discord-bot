@@ -45,8 +45,7 @@ public class SpamListener extends ListenerAdapter {
                                                                             .getContentRaw()))
                                             .queue());
 
-            Objects.requireNonNull(event.getGuild()
-                            .getTextChannelById(MODERATOR_CHANNEL_ID))
+            Objects.requireNonNull(event.getGuild().getTextChannelById(MODERATOR_CHANNEL_ID))
                     .sendMessage(
                             """
                 %s message was deleted for containing words blacklisted by this server!
