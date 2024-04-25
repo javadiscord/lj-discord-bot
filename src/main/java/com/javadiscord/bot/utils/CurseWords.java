@@ -2,24 +2,15 @@ package com.javadiscord.bot.utils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CurseWords {
     public static boolean containsCurseWord(String text) {
-        String regex =
-                "\\b("
-                        + String.join("|", curseWords)
-                        + ")\\b|\\b(?:"
-                        + String.join(
-                                "|",
-                                curseWords.stream()
-                                        .map(w -> w.replaceAll("[aeiou]", ""))
-                                        .toArray(String[]::new))
-                        + ")\\b";
-        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(text);
-        return matcher.find();
+        for(String s : curseWords) {
+            if(text.contains(s)) {
+                return true;
+            };
+        }
+        return false;
     }
 
     private static final List<String> curseWords =
