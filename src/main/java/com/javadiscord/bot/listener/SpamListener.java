@@ -1,5 +1,6 @@
 package com.javadiscord.bot.listener;
 
+import com.javadiscord.bot.utils.CurseWords;
 import com.javadiscord.bot.utils.Executor;
 
 import net.dv8tion.jda.api.entities.Role;
@@ -20,6 +21,20 @@ public class SpamListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+        if(CurseWords.containsCurseWord(event.getMessage().getContentRaw())) {
+
+            event.getMessage().delete().queue();
+            event.getAuthor().openPrivateChannel().queue(channel -> {
+                channel.sendMessage("""
+                        Your message has been removed for containing words blacklisted by this server!
+                        Please avoid sending such messages in the future. Thank you.
+                        
+                        The message you sent:
+                        > %s
+                        
+                        """.formatted(event.getMessage().getContentRaw())).queue();
+            });
+        }
         muteIfNeeded(event);
     }
 
