@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SpamListener extends ListenerAdapter {
     private static final Logger logger = LogManager.getLogger(SpamListener.class);
+    private static final long MODERATOR_CHANNEL_ID = 1152637760033804319L;
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -43,7 +44,23 @@ public class SpamListener extends ListenerAdapter {
                                                                     event.getMessage()
                                                                             .getContentRaw()))
                                             .queue());
+
+            Objects.requireNonNull(event.getGuild()
+                            .getTextChannelById(MODERATOR_CHANNEL_ID))
+                    .sendMessage(
+                            """
+                %s message was deleted for containing words blacklisted by this server!
+
+                The message sent was:
+                > %s
+
+                """
+                                    .formatted(
+                                            event.getMessage().getAuthor().getAsMention(),
+                                            event.getMessage().getContentRaw()))
+                    .queue();
         }
+
         muteIfNeeded(event);
     }
 
