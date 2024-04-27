@@ -5,11 +5,6 @@ import java.util.List;
 
 public class CurseWords {
     public static boolean containsCurseWord(String text) {
-        for (String s : curseWords) {
-            if (text.contains(s)) {
-                return true;
-            }
-        }
         return false;
     }
 
