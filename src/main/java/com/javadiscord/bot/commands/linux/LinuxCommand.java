@@ -25,7 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public class LinuxCommand implements SlashCommand {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(LinuxCommand.class);
 
     private static final String COMMAND_PARAMETER = "command";
 

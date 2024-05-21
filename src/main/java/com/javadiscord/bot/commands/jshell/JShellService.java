@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class JShellService {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(JShellService.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String API_URL = System.getenv("JSHELL_API_URL");
 
