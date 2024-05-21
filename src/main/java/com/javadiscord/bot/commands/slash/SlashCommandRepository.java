@@ -4,6 +4,7 @@ import com.javadiscord.bot.commands.jshell.JShellCommand;
 import com.javadiscord.bot.commands.jshell.JShellHistoryClearCommand;
 import com.javadiscord.bot.commands.jshell.JShellHistoryCommand;
 import com.javadiscord.bot.commands.jshell.JShellService;
+import com.javadiscord.bot.commands.slash.impl.ChatGPTSlashCommand;
 import com.javadiscord.bot.commands.slash.impl.CloseQuestionThreadCommand;
 import com.javadiscord.bot.commands.slash.impl.PingSlashCommand;
 
@@ -16,7 +17,7 @@ public class SlashCommandRepository {
     private static final String DOCKER_URL = "tcp://localhost:2375";
 
     static {
-        //  COMMANDS.put("chatgpt", new ChatGPTSlashCommand());
+        COMMANDS.put("chatgpt", new ChatGPTSlashCommand());
         COMMANDS.put("close", new CloseQuestionThreadCommand());
         COMMANDS.put("ping", new PingSlashCommand());
 
